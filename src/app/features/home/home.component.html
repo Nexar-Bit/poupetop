@@ -1,0 +1,68 @@
+<div class="home-container">
+  <div class="home-content">
+    <!-- Advertise Section -->
+    <section class="advertise-info-section">
+      <div class="advertise-box">
+        <p class="advertise-text">
+          Quer anunciar suas ofertas? Cadastre-se 
+          <a 
+            routerLink="/establishment-signup" 
+            class="advertise-link"
+            [attr.aria-label]="'Ir para página de cadastro de estabelecimento'"
+            title="Cadastrar estabelecimento">
+            AQUI
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Banner Carousel -->
+    <section class="banner-section">
+      <app-banner-carousel></app-banner-carousel>
+    </section>
+
+    <!-- City Selection -->
+    <section class="city-selection-section">
+      <app-city-selector (citySelected)="onCitySelected($event)"></app-city-selector>
+    </section>
+
+    <!-- Filter by Establishment -->
+    <section class="establishment-filter-section">
+      <app-establishment-filter
+        [cityId]="selectedCityId"
+        [selectedCity]="selectedCity"
+        (establishmentsSelected)="onEstablishmentSelected($event)">
+      </app-establishment-filter>
+    </section>
+
+    <!-- Daily Offers -->
+    <section class="daily-offers-section">
+      <h2 class="daily-offers-title">Ofertas do dia</h2>
+      <app-offers-grid
+        [cityId]="selectedCityId"
+        [establishmentIds]="selectedEstablishmentIds">
+      </app-offers-grid>
+    </section>
+
+    <!-- Customer Purchases -->
+    <section class="purchases-section">
+      <app-purchases></app-purchases>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <button class="footer-button" type="button">Rodapé</button>
+    </footer>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+</div>
+

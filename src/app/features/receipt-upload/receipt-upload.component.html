@@ -1,0 +1,168 @@
+<div class="receipt-upload-container">
+  <div class="upload-card">
+    <div class="upload-header">
+      <h1>Enviar Nota Fiscal</h1>
+      <p class="subtitle">Faça upload da sua nota fiscal e preencha os dados</p>
+    </div>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+      <!-- File Upload Area -->
+      <div class="file-upload-section">
+        <div
+          class="upload-zone"
+          [class.dragging]="isDragging"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+          (click)="openFileDialog()">
+          <input
+            type="file"
+            id="file-input"
+            accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
+            (change)="onFileSelected($event)"
+            class="file-input-hidden"
+            aria-label="Selecionar arquivo da nota fiscal"
+            title="Selecionar arquivo da nota fiscal" />
+          
+          <div class="upload-content" *ngIf="!selectedFile">
+            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+            <p class="upload-text">
+              <strong>Clique para selecionar</strong> ou arraste o arquivo aqui
+            </p>
+            <p class="upload-hint">
+              Formatos aceitos: JPG, PNG, WEBP, PDF (máx. 5MB)
+            </p>
+          </div>
+
+          <div class="file-selected" *ngIf="selectedFile">
+            <div class="file-info">
+              <mat-icon class="file-icon">{{ selectedFile.type === 'application/pdf' ? 'picture_as_pdf' : 'image' }}</mat-icon>
+              <div class="file-details">
+                <p class="file-name">{{ selectedFile.name }}</p>
+                <p class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+              </div>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="removeFile(); $event.stopPropagation()"
+                class="remove-button"
+                [attr.aria-label]="'Remover arquivo'">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="image-preview" *ngIf="imagePreview && isImageFile()">
+          <img [src]="imagePreview" alt="Preview da nota fiscal" />
+          <button
+            mat-icon-button
+            type="button"
+            (click)="removeFile()"
+            class="preview-remove-button"
+            [attr.aria-label]="'Remover imagem'">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="form-fields">
+        <!-- Receipt Date -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Data da Nota Fiscal</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="receiptDate"
+            placeholder="Selecione a data"
+            required />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-icon matPrefix>calendar_today</mat-icon>
+          <mat-error *ngIf="receiptDate?.invalid && receiptDate?.touched">
+            Data é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Amount -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Valor Total</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="amount"
+            placeholder="0,00"
+            (input)="onAmountInput($event)"
+            required />
+          <span matPrefix>R$&nbsp;</span>
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <mat-error *ngIf="amount?.invalid && amount?.touched">
+            {{ getAmountErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Store Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome do Estabelecimento</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="storeName"
+            placeholder="Nome da loja ou estabelecimento"
+            required />
+          <mat-icon matPrefix>store</mat-icon>
+          <mat-error *ngIf="storeName?.invalid && storeName?.touched">
+            {{ getStoreNameErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Category -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="category" required>
+            <mat-option *ngFor="let cat of categories" [value]="cat">
+              {{ cat }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>category</mat-icon>
+          <mat-error *ngIf="category?.invalid && category?.touched">
+            Categoria é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descrição (opcional)</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Observações adicionais sobre a compra"
+            rows="3"></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="submit-button"
+        [disabled]="uploadForm.invalid || !selectedFile || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+        <span *ngIf="!isLoading">Enviar Nota Fiscal</span>
+        <span *ngIf="isLoading">Enviando...</span>
+      </button>
+    </form>
+
+    <div class="back-to-home">
+      <a routerLink="/" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Voltar para o início</span>
+      </a>
+    </div>
+  </div>
+</div>
+

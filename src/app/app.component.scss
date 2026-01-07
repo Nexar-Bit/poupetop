@@ -1,0 +1,65 @@
+main {
+  min-height: calc(100vh - 60px); /* Account for header (60px) */
+  padding: 0;
+  margin-top: 60px; /* Account for fixed header (60px) */
+  transition: padding 0.3s ease;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #fafafa; /* Subtle background to contrast with banner */
+
+  /* Mobile - Small (320px - 374px) */
+  @media (min-width: 320px) and (max-width: 374px) {
+    padding: 0.75rem;
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* Mobile - Medium (375px - 424px) */
+  @media (min-width: 375px) and (max-width: 424px) {
+    padding: 1rem;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* Mobile - Large (425px - 767px) */
+  @media (min-width: 425px) and (max-width: 767px) {
+    padding: 1.25rem;
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  /* Tablet (768px - 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    padding: 1.5rem;
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  /* Desktop (1024px+) */
+  @media (min-width: 1024px) {
+    padding: 2rem;
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Large Desktop (1440px+) */
+  @media (min-width: 1440px) {
+    padding: 2.5rem;
+    max-width: 1600px;
+  }
+
+  /* XLarge Desktop (1920px+) */
+  @media (min-width: 1920px) {
+    padding: 3rem;
+    max-width: 1800px;
+  }
+}
+

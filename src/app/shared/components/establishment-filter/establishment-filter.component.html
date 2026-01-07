@@ -1,0 +1,112 @@
+<div class="establishment-filter-container" *ngIf="cityId">
+  <h4 class="filter-title">
+    <mat-icon>filter_list</mat-icon>
+    Selecione um estabelecimento
+  </h4>
+
+  <!-- Autocomplete Search Field (for filtering products) -->
+  <mat-form-field appearance="outline" class="autocomplete-field">
+    <mat-label>Buscar e filtrar por estabelecimento</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="autocompleteControl"
+      [matAutocomplete]="auto"
+      placeholder="Digite o nome do estabelecimento..."
+      class="autocomplete-input" />
+    <mat-icon matPrefix>search</mat-icon>
+    <button
+      *ngIf="selectedEstablishmentForFilter"
+      matSuffix
+      mat-icon-button
+      type="button"
+      (click)="clearEstablishmentFilter(); $event.stopPropagation()"
+      [attr.aria-label]="'Limpar filtro'">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      [displayWith]="displayEstablishment"
+      (optionSelected)="onEstablishmentSelectedFromAutocomplete($event.option.value)"
+      autoActiveFirstOption
+      class="establishment-autocomplete">
+      <mat-option
+        *ngFor="let establishment of filteredAutocompleteEstablishments"
+        [value]="establishment"
+        class="autocomplete-option">
+        <span class="establishment-name-autocomplete">{{ establishment.name }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <!-- Search Field (for filtering the list) -->
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Buscar na lista</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="searchControl"
+      placeholder="Digite para buscar na lista..."
+      class="search-input" />
+    <mat-icon matPrefix>filter_list</mat-icon>
+  </mat-form-field>
+
+  <p class="city-info" *ngIf="selectedCity">
+    Mercados e estabelecimentos em <strong>{{ selectedCity.name }}, {{ selectedCity.state }}</strong>
+  </p>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="loading-text">Carregando estabelecimentos...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="hasError && !isLoading" class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <p>Erro ao carregar estabelecimentos</p>
+    <span class="error-hint">Tente novamente mais tarde</span>
+  </div>
+
+  <!-- Establishments List -->
+  <div *ngIf="!isLoading && !hasError" class="establishments-list-container">
+    <cdk-virtual-scroll-viewport itemSize="56" class="virtual-scroll-viewport">
+      <mat-list class="establishments-list">
+        <mat-list-item
+          *cdkVirtualFor="let establishment of filteredEstablishments"
+          (click)="toggleEstablishment(establishment)"
+          [class.selected]="isSelected(establishment.id)"
+          class="establishment-item">
+          <mat-checkbox
+            [checked]="isSelected(establishment.id)"
+            (click)="$event.stopPropagation()"
+            (change)="toggleEstablishment(establishment)"
+            class="establishment-checkbox">
+          </mat-checkbox>
+          <span class="establishment-name">{{ establishment.name }}</span>
+        </mat-list-item>
+      </mat-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <!-- No Results (only when not loading and no error) -->
+  <div *ngIf="!isLoading && !hasError && filteredEstablishments.length === 0 && establishments.length === 0" class="no-results">
+    <mat-icon class="no-results-icon">store_mall_directory</mat-icon>
+    <p>Nenhum estabelecimento encontrado nesta cidade</p>
+    <span class="no-results-hint">Tente selecionar outra cidade</span>
+  </div>
+
+  <!-- No Search Results (when search returns no results but there are establishments) -->
+  <div *ngIf="!isLoading && !hasError && filteredEstablishments.length === 0 && establishments.length > 0" class="no-results">
+    <mat-icon class="no-results-icon">search_off</mat-icon>
+    <p>Nenhum estabelecimento encontrado</p>
+    <span class="no-results-hint">Tente ajustar sua busca</span>
+  </div>
+</div>
+
+<div *ngIf="!cityId" class="no-city-message">
+  <mat-icon class="no-city-icon">location_city</mat-icon>
+  <p>Selecione uma cidade para ver os estabelecimentos</p>
+  <span class="no-city-hint">Use o campo de busca acima para encontrar sua cidade</span>
+</div>
+

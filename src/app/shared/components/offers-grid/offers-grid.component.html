@@ -1,0 +1,90 @@
+<div class="offers-grid-container" #gridContainer>
+  <!-- Pull-to-refresh indicator (only when city is selected) -->
+  <div class="pull-to-refresh" *ngIf="cityId" [class.active]="isRefreshing || pullDistance > 0" [style.transform]="getPullTransform()">
+    <mat-spinner *ngIf="isRefreshing" diameter="24"></mat-spinner>
+    <span *ngIf="!isRefreshing && pullDistance > 80" class="pull-hint">Solte para atualizar</span>
+    <span *ngIf="!isRefreshing && pullDistance <= 80 && pullDistance > 0" class="pull-hint">Puxe para atualizar</span>
+  </div>
+
+  <!-- Loading Skeleton (only when city is selected) -->
+  <app-skeleton
+    *ngIf="isLoading && cityId"
+    type="card"
+    [count]="8"
+    width="200px"
+    height="280px">
+  </app-skeleton>
+
+  <!-- Offers Grid - shows default offers when no city, city offers when city selected -->
+  <div class="offers-grid" *ngIf="(offers.length > 0 || defaultOffers.length > 0) && !isLoading" [style.transform]="getPullTransform()">
+    <div *ngFor="let offer of (cityId ? offers : defaultOffers)" class="offer-card">
+      <div class="offer-image-container">
+        <img
+          [src]="offer.image"
+          [alt]="offer.productName"
+          [title]="offer.productName"
+          class="offer-image"
+          loading="lazy" />
+        <div *ngIf="offer.originalPrice" class="discount-badge">
+          -{{ calculateDiscount(offer.price, offer.originalPrice) }}%
+        </div>
+      </div>
+      <div class="offer-content">
+        <h3 class="product-name">{{ offer.productName }}</h3>
+        <div class="establishment-info">
+          <mat-icon class="store-icon">store</mat-icon>
+          <p class="establishment-name">{{ offer.establishmentName }}</p>
+        </div>
+        <div class="price-container">
+          <span class="price">{{ formatPrice(offer.price) }}</span>
+          <span *ngIf="offer.originalPrice" class="original-price">
+            {{ formatPrice(offer.originalPrice) }}
+          </span>
+          <span class="payment-info">no Pix</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination Controls (only when city is selected) -->
+  <div *ngIf="cityId && totalPages > 1 && !isLoading" class="pagination-container">
+    <button
+      mat-icon-button
+      class="pagination-button"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+      [attr.aria-label]="'Página anterior'">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    
+    <div class="page-numbers">
+      <button
+        *ngFor="let page of getVisiblePages()"
+        mat-button
+        class="page-button"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+        [attr.aria-label]="'Ir para página ' + page"
+        [attr.aria-current]="page === currentPage ? 'page' : null">
+        {{ page }}
+      </button>
+    </div>
+    
+    <button
+      mat-icon-button
+      class="pagination-button"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+      [attr.aria-label]="'Próxima página'">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- No offers message (only when city is selected and no offers found) -->
+  <div *ngIf="cityId && offers.length === 0 && !isLoading" class="no-offers">
+    <mat-icon class="no-offers-icon">search_off</mat-icon>
+    <p>Nenhuma oferta encontrada</p>
+    <span class="no-offers-hint">Tente selecionar outra cidade ou estabelecimento</span>
+  </div>
+</div>
+

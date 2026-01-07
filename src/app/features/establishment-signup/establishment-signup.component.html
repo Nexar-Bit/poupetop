@@ -1,0 +1,172 @@
+<div class="establishment-signup-container">
+  <div class="signup-card">
+    <div class="signup-header">
+      <h1>Cadastro de Estabelecimento</h1>
+      <p class="subtitle">Preencha os dados abaixo para se cadastrar</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+      <!-- Business Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Razão Social</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="businessName"
+          placeholder="Nome da empresa"
+          required />
+        <mat-icon matPrefix>business</mat-icon>
+        <mat-error *ngIf="businessName?.invalid && businessName?.touched">
+          {{ getBusinessNameErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- CNPJ -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>CNPJ</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="cnpj"
+          placeholder="00.000.000/0000-00"
+          (input)="formatCNPJ($event)"
+          maxlength="18"
+          required />
+        <mat-icon matPrefix>badge</mat-icon>
+        <mat-error *ngIf="cnpj?.invalid && cnpj?.touched">
+          {{ getCnpjErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="contato@empresa.com"
+          autocomplete="email"
+          required />
+        <mat-icon matPrefix>email</mat-icon>
+        <mat-error *ngIf="email?.invalid && email?.touched">
+          {{ getEmailErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Phone -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Telefone</mat-label>
+        <input
+          matInput
+          type="tel"
+          formControlName="phone"
+          placeholder="(00) 00000-0000"
+          (input)="formatPhone($event)"
+          maxlength="15"
+          required />
+        <mat-icon matPrefix>phone</mat-icon>
+        <mat-error *ngIf="phone?.invalid && phone?.touched">
+          {{ getPhoneErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Address -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Endereço</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="address"
+          placeholder="Rua, número, complemento"
+          required />
+        <mat-icon matPrefix>location_on</mat-icon>
+        <mat-error *ngIf="address?.invalid && address?.touched">
+          {{ getAddressErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- City -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Cidade</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="cityControl"
+          [matAutocomplete]="cityAuto"
+          placeholder="Digite sua cidade"
+          required />
+        <mat-icon matPrefix>place</mat-icon>
+        <mat-autocomplete #cityAuto="matAutocomplete" [displayWith]="displayCity">
+          <mat-option *ngFor="let city of filteredCities$ | async" [value]="city">
+            {{ city.name }} - {{ city.state }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="city?.invalid && city?.touched">
+          Cidade é obrigatória
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Mínimo 8 caracteres"
+          autocomplete="new-password"
+          required />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+          type="button"
+          [attr.aria-label]="'Mostrar senha'"
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint>Mínimo 8 caracteres com maiúsculas, minúsculas, números e símbolos</mat-hint>
+        <mat-error *ngIf="password?.invalid && password?.touched">
+          {{ getPasswordErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Terms Acceptance -->
+      <div class="terms-checkbox">
+        <mat-checkbox formControlName="termsAccepted" color="primary">
+          <span class="terms-text">
+            Eu aceito os 
+            <a href="/terms" target="_blank" class="terms-link">termos e condições</a>
+            e a 
+            <a href="/privacy" target="_blank" class="terms-link">política de privacidade</a>
+          </span>
+        </mat-checkbox>
+        <mat-error *ngIf="termsAccepted?.invalid && termsAccepted?.touched" class="terms-error">
+          Você deve aceitar os termos e condições
+        </mat-error>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="submit-button"
+        [disabled]="signupForm.invalid || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+        <span *ngIf="!isLoading">Cadastrar</span>
+        <span *ngIf="isLoading">Cadastrando...</span>
+      </button>
+    </form>
+
+    <div class="back-to-home">
+      <a routerLink="/" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Voltar para o início</span>
+      </a>
+    </div>
+  </div>
+</div>
+

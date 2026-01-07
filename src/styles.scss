@@ -1,0 +1,434 @@
+/* Angular Material Theme - @use must be first */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Custom theme configuration
+$primary-palette: (
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #1976d2,
+  600: #1565c0,
+  700: #0d47a1,
+  800: #0277bd,
+  900: #01579b,
+  A100: #82b1ff,
+  A200: #448aff,
+  A400: #2979ff,
+  A700: #2962ff,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+$primary: mat.define-palette($primary-palette, 500);
+$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($theme);
+
+/* Global Material Button Touch Target Overrides */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-icon-button,
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.3s ease;
+
+  &:active:not([disabled]) {
+    transform: scale(0.95);
+  }
+
+  @media (min-width: 320px) and (max-width: 374px) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Material Checkbox Touch Target */
+.mat-mdc-checkbox {
+  .mdc-checkbox {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+}
+
+/* Material List Item Touch Targets */
+.mat-mdc-list-item {
+  min-height: 48px;
+  touch-action: manipulation;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (min-width: 320px) and (max-width: 374px) {
+    min-height: 44px;
+  }
+}
+
+/* CSS Reset - Responsive */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 16px;
+  height: 100%;
+  /* Safe area support for notched phones */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  
+  /* Mobile - Small */
+  @media (min-width: 320px) and (max-width: 374px) {
+    font-size: 15px;
+  }
+  
+  /* Mobile - Medium */
+  @media (min-width: 375px) and (max-width: 424px) {
+    font-size: 15.5px;
+  }
+  
+  /* Mobile - Large */
+  @media (min-width: 425px) and (max-width: 767px) {
+    font-size: 16px;
+  }
+  
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    font-size: 16px;
+  }
+  
+  /* Desktop */
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+  
+  /* Large Desktop */
+  @media (min-width: 1440px) {
+    font-size: 18px;
+  }
+  
+  /* XLarge Desktop */
+  @media (min-width: 1920px) {
+    font-size: 20px;
+  }
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* Safe area support */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Image optimization for mobile */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  loading: lazy;
+  decoding: async;
+  
+  /* Responsive image sizing */
+  @media (max-width: 425px) {
+    max-width: 100vw;
+  }
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Global Material Design Input Text Centering */
+.mat-mdc-form-field {
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .mat-mdc-form-field-input-control {
+      display: flex;
+      align-items: center;
+    }
+
+    .mat-mdc-form-field-infix {
+      display: flex;
+      align-items: center;
+      padding: 0 !important;
+      border-top: 0 !important;
+    }
+
+    .mdc-text-field {
+      display: flex;
+      align-items: center;
+    }
+
+    .mdc-text-field__input {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      line-height: 1.5 !important;
+    }
+
+    input[matInput],
+    textarea[matInput] {
+      line-height: 1.5 !important;
+      padding: 0.75rem 0 !important;
+      margin: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+
+      &::placeholder {
+        line-height: 1.5 !important;
+      }
+    }
+
+    textarea[matInput] {
+      align-items: flex-start !important;
+      padding-top: 0.75rem !important;
+    }
+  }
+}
+
+/* Global Material Design Checkbox Centering */
+.mat-mdc-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ::ng-deep {
+    .mdc-checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  
+  &:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  touch-action: manipulation;
+
+  &:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Breakpoints for Responsive Design */
+$mobile-min: 320px;
+$mobile-max: 767px;
+$tablet-min: 768px;
+$tablet-max: 1023px;
+$desktop-min: 1024px;
+$desktop-large: 1440px;
+$desktop-xlarge: 1920px;
+
+$mobile-small: 320px;
+$mobile-medium: 375px;
+$mobile-large: 425px;
+
+/* Mobile Media Query Mixins */
+@mixin mobile {
+  @media (min-width: #{$mobile-min}) and (max-width: #{$mobile-max}) {
+    @content;
+  }
+}
+
+@mixin mobile-small {
+  @media (min-width: #{$mobile-small}) and (max-width: 374px) {
+    @content;
+  }
+}
+
+@mixin mobile-medium {
+  @media (min-width: #{$mobile-medium}) and (max-width: 424px) {
+    @content;
+  }
+}
+
+@mixin mobile-large {
+  @media (min-width: #{$mobile-large}) and (max-width: #{$mobile-max}) {
+    @content;
+  }
+}
+
+/* Tablet Media Query Mixins */
+@mixin tablet {
+  @media (min-width: #{$tablet-min}) and (max-width: #{$tablet-max}) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait {
+  @media (min-width: #{$tablet-min}) and (max-width: #{$tablet-max}) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (min-width: #{$tablet-min}) and (max-width: #{$tablet-max}) and (orientation: landscape) {
+    @content;
+  }
+}
+
+/* Desktop Media Query Mixins */
+@mixin desktop {
+  @media (min-width: #{$desktop-min}) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media (min-width: #{$desktop-large}) {
+    @content;
+  }
+}
+
+@mixin desktop-xlarge {
+  @media (min-width: #{$desktop-xlarge}) {
+    @content;
+  }
+}
+
+/* Orientation Mixins */
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+/* Touch target mixin - ensures minimum 44x44px */
+@mixin touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  
+  @include mobile {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Smooth transitions mixin */
+@mixin smooth-transition($properties: all, $duration: 0.3s, $easing: ease) {
+  transition: $properties $duration $easing;
+  will-change: $properties;
+}
+
+/* Safe area mixin for notched devices */
+@mixin safe-area-padding {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Error Snackbar Styles */
+.error-snackbar {
+  .mdc-snackbar__surface {
+    background-color: #f44336 !important;
+  }
+  
+  .mdc-snackbar__label {
+    color: white !important;
+  }
+}

@@ -1,0 +1,9 @@
+<div class="skeleton-container" [ngClass]="'skeleton-' + type">
+  <div
+    *ngFor="let item of [].constructor(count); let i = index"
+    class="skeleton-item"
+    [style.width]="width"
+    [style.height]="height">
+  </div>
+</div>
+

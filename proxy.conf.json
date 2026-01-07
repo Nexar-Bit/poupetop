@@ -1,0 +1,20 @@
+{
+  "/api/*": {
+    "target": "https://meumercadohoje.com.br",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/estabelecimentos*": {
+    "target": "https://meumercadohoje.com.br",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/produtos-nota-fiscal*": {
+    "target": "https://meumercadohoje.com.br",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

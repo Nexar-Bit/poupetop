@@ -1,0 +1,38 @@
+<div class="city-selector-container">
+  <div class="city-search-wrapper">
+    <button class="location-button" type="button" [attr.aria-label]="'Selecionar localização'">
+      <mat-icon>location_on</mat-icon>
+    </button>
+    <mat-form-field appearance="outline" class="city-input-field">
+      <input
+        #cityInput
+        type="text"
+        matInput
+        [formControl]="cityControl"
+        [matAutocomplete]="auto"
+        placeholder="Digite sua cidade"
+        class="city-input"
+        (focus)="onInputFocus()" />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        [displayWith]="displayCity"
+        (optionSelected)="onCitySelected($event.option.value)"
+        autoActiveFirstOption
+        class="city-autocomplete"
+        [panelWidth]="'auto'">
+        <mat-option
+          *ngFor="let city of filteredCities$ | async"
+          [value]="city"
+          class="city-option">
+          <span class="city-name">{{ city.nomeMunicipio || city.name }}</span>
+          <span class="city-state">, {{ city.siglaEstado || city.state }}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="est-indicator">
+    <mat-icon class="est-icon">print</mat-icon>
+    <span class="est-text">EST</span>
+  </div>
+</div>
+

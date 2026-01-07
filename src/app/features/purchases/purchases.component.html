@@ -1,0 +1,61 @@
+<div class="purchases-container">
+  <div class="purchases-header">
+    <mat-icon class="purchases-header-icon">shopping_cart</mat-icon>
+    <h2 class="purchases-title">Compras dos nossos clientes</h2>
+  </div>
+  <div *ngIf="groupedPurchases.length > 0" class="purchases-list">
+    <div *ngFor="let group of groupedPurchases" class="date-group">
+      <div class="date-header-wrapper">
+        <mat-icon class="date-icon">calendar_today</mat-icon>
+        <h3 class="date-header">{{ group.formattedDate }}</h3>
+      </div>
+      
+      <mat-list class="purchases-list-group">
+        <mat-list-item
+          *ngFor="let purchase of group.purchases"
+          class="purchase-item">
+          <div class="purchase-content">
+            <div class="purchase-time">{{ purchase.time }}</div>
+            
+            <div class="purchase-details">
+              <div class="store-info">
+                <mat-icon class="category-icon">{{ getCategoryIcon(purchase.category) }}</mat-icon>
+                <span class="store-name">{{ purchase.store }}</span>
+              </div>
+              <div class="purchase-amount">-{{ formatPrice(purchase.amount) }}</div>
+            </div>
+            <div class="purchase-category">{{ purchase.category }}</div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+
+  <div *ngIf="groupedPurchases.length === 0 && !isLoading" class="no-purchases">
+    <p>Nenhuma compra encontrada</p>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <app-skeleton
+    *ngIf="isLoading && groupedPurchases.length === 0"
+    type="text"
+    [count]="5"
+    width="100%"
+    height="60px">
+  </app-skeleton>
+
+  <div *ngIf="isLoading && groupedPurchases.length > 0" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="hasMore && !isLoading && groupedPurchases.length > 0" class="load-more-container">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="loadMore()"
+      class="load-more-button">
+      Carregar mais
+    </button>
+  </div>
+</div>
+

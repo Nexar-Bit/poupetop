@@ -1,0 +1,72 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Entrar</h1>
+      <p class="subtitle">Acesse sua conta</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+          required />
+        <mat-icon matPrefix>email</mat-icon>
+        <mat-error *ngIf="email?.invalid && email?.touched">
+          {{ getEmailErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Digite sua senha"
+          autocomplete="current-password"
+          required />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+          type="button"
+          [attr.aria-label]="'Mostrar senha'"
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="password?.invalid && password?.touched">
+          {{ getPasswordErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="forgot-password-link">
+        <a routerLink="/forgot-password" class="link">Esqueceu sua senha?</a>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="login-button"
+        [disabled]="loginForm.invalid || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+        <span *ngIf="!isLoading">Entrar</span>
+        <span *ngIf="isLoading">Entrando...</span>
+      </button>
+    </form>
+
+    <div class="back-to-home">
+      <a routerLink="/" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Voltar para o início</span>
+      </a>
+    </div>
+  </div>
+</div>
+

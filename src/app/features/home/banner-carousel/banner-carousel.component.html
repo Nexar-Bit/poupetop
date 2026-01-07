@@ -1,0 +1,54 @@
+<div class="banner-carousel-container">
+  <!-- Loading Skeleton -->
+  <app-skeleton
+    *ngIf="isLoading"
+    type="rect"
+    [count]="1"
+    width="100%"
+    height="200px">
+  </app-skeleton>
+
+  <div class="banner-wrapper" *ngIf="!isLoading && banners.length > 0">
+    <swiper-container
+      #swiperContainer
+      class="banner-swiper"
+      pagination="true"
+      autoplay="true"
+      autoplay-delay="5000"
+      autoplay-disable-on-interaction="false"
+      loop="true"
+      speed="500"
+      slides-per-view="1"
+      space-between="0"
+      touch-events-target="container"
+      allow-touch-move="true"
+      grab-cursor="true"
+      effect="slide">
+      <swiper-slide *ngFor="let banner of banners">
+        <a [routerLink]="banner.linkUrl" class="banner-slide">
+          <img
+            [src]="banner.imageUrl"
+            [alt]="banner.title"
+            [title]="banner.title"
+            class="banner-image"
+            loading="lazy" />
+        </a>
+      </swiper-slide>
+    </swiper-container>
+    
+    <!-- Centered Action Buttons -->
+    <div class="banner-actions">
+      <button class="how-it-works-button" type="button">
+        Como funciona?
+      </button>
+      <a 
+        routerLink="/receipt-upload" 
+        class="register-invoice-link"
+        [attr.aria-label]="'Ir para página de upload de nota fiscal'"
+        title="Cadastrar nota fiscal">
+        Cadastre sua Nota Fiscal aqui!
+      </a>
+    </div>
+  </div>
+</div>
+
