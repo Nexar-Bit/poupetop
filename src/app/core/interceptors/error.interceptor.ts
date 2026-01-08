@@ -21,7 +21,21 @@ export class ErrorInterceptor implements HttpInterceptor {
           // Server-side error
           switch (error.status) {
             case 0:
-              errorMessage = 'Unable to connect to server. Please check your connection.';
+              // CORS or network errors
+              // CORS errors typically have status 0 with external HTTPS URLs
+              const optionalEndpoints = ['/api/banners', '/api/purchases'];
+              const isOptionalEndpoint = optionalEndpoints.some(endpoint => req.url.includes(endpoint));
+              
+              // If it's an external HTTPS URL, it's likely a CORS error
+              if (req.url.startsWith('https://')) {
+                errorMessage = 'CORS error: Backend server needs to allow requests from this domain.';
+                // Suppress snackbar for optional endpoints
+                if (isOptionalEndpoint) {
+                  showSnackbar = false;
+                }
+              } else {
+                errorMessage = 'Unable to connect to server. Please check your connection.';
+              }
               break;
             case 400:
               errorMessage = error.error?.message || 'Bad request. Please check your input.';
