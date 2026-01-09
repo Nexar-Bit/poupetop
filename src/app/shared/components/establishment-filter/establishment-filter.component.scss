@@ -152,6 +152,22 @@
       min-height: 48px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
+      // Ensure prefix doesn't overlap input text
+      padding-left: 0 !important;
+    }
+
+    // Fix mat-label positioning to prevent overlap and center it properly
+    .mat-mdc-floating-label {
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      transform-origin: left top;
+    }
+
+    .mdc-text-field--focused .mat-mdc-floating-label,
+    .mdc-text-field--has-value .mat-mdc-floating-label {
+      transform: translateY(-50%) scale(0.75) !important;
+      top: 0 !important;
     }
 
     .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
@@ -187,17 +203,45 @@
       align-items: center;
     }
 
-    .mdc-text-field__input {
-      height: 48px !important;
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      line-height: 48px !important;
-      display: flex !important;
-      align-items: center !important;
-    }
+      .mdc-text-field__input {
+        height: 48px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        // Apply maximum padding to push text far to the right, overriding global styles
+        padding-left: 5rem !important; /* ~80px - ensures text starts after icon */
+        padding-right: 1rem !important;
+        line-height: 48px !important;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+        display: block;
+      }
+
+      // Also target the input element directly with maximum specificity
+      input.autocomplete-input {
+        padding-left: 5rem !important;
+        padding-right: 1rem !important;
+      }
 
     .mat-icon {
       color: #1976d2;
+    }
+
+    // Ensure Material's prefix icon spacing is preserved
+    .mat-mdc-form-field-prefix {
+      // Material handles this automatically, but ensure it's not collapsed
+      min-width: auto;
+      // Add extra spacing to push input text further right
+      margin-right: 0.75rem !important;
+    }
+
+    // Ensure proper spacing between prefix icon and input text
+    .mat-mdc-form-field-icon-prefix {
+      // Material's default spacing should work, but ensure it's visible
+      margin-right: 0.75rem !important;
+      padding-right: 0.75rem !important;
     }
   }
 
@@ -216,6 +260,10 @@
       .mdc-text-field__input {
         height: 44px !important;
         line-height: 44px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }
@@ -226,18 +274,21 @@
   height: 48px !important;
   min-height: 48px !important;
   font-size: 16px;
-  padding: 0 1rem !important;
+  // Maximum left padding to push text far to the right, keeping icon in place
+  // Material icon (24px) + icon padding (12px each side) + prefix container spacing + extra margin = ~80px
+  padding-left: 5rem !important; /* ~80px total spacing - ensures text is fully visible */
+  padding-right: 1rem !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   margin: 0 !important;
   line-height: 48px !important;
-  display: flex !important;
-  align-items: center !important;
   box-sizing: border-box;
   border: none;
   vertical-align: middle;
-
-  &::placeholder {
-    line-height: 48px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 
   &:focus {
     outline: none;
@@ -247,10 +298,8 @@
     height: 44px !important;
     min-height: 44px !important;
     line-height: 44px !important;
-
-    &::placeholder {
-      line-height: 44px;
-    }
+    padding-left: 5rem !important;
+    padding-right: 1rem !important;
   }
 }
 
@@ -360,6 +409,22 @@
       min-height: 48px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
+      // Ensure prefix doesn't overlap input text
+      padding-left: 0 !important;
+    }
+
+    // Fix mat-label positioning to prevent overlap and center it properly
+    .mat-mdc-floating-label {
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      transform-origin: left top;
+    }
+
+    .mdc-text-field--focused .mat-mdc-floating-label,
+    .mdc-text-field--has-value .mat-mdc-floating-label {
+      transform: translateY(-50%) scale(0.75) !important;
+      top: 0 !important;
     }
 
     .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
@@ -395,17 +460,45 @@
       align-items: center;
     }
 
-    .mdc-text-field__input {
-      height: 48px !important;
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      line-height: 48px !important;
-      display: flex !important;
-      align-items: center !important;
-    }
+      .mdc-text-field__input {
+        height: 48px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        // Apply maximum padding to push text far to the right
+        padding-left: 5rem !important; /* ~80px - ensures text starts after icon */
+        padding-right: 1rem !important;
+        line-height: 48px !important;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+        display: block;
+      }
+
+      // Also target the input element directly with maximum specificity
+      input.search-input {
+        padding-left: 5rem !important;
+        padding-right: 1rem !important;
+      }
 
     .mat-icon {
       color: #1976d2;
+    }
+
+    // Ensure Material's prefix icon spacing is preserved
+    .mat-mdc-form-field-prefix {
+      // Material handles this automatically, but ensure it's not collapsed
+      min-width: auto;
+      // Add extra spacing to push input text further right
+      margin-right: 0.75rem !important;
+    }
+
+    // Ensure proper spacing between prefix icon and input text
+    .mat-mdc-form-field-icon-prefix {
+      // Material's default spacing should work, but ensure it's visible
+      margin-right: 0.75rem !important;
+      padding-right: 0.75rem !important;
     }
   }
 }
@@ -415,21 +508,29 @@
   height: 48px !important;
   min-height: 48px !important;
   font-size: 16px;
-  padding: 0 1rem !important;
+  // Maximum left padding to push text far to the right, keeping icon in place
+  // Material icon (24px) + icon padding (12px each side) + prefix container spacing + extra margin = ~80px
+  padding-left: 5rem !important; /* ~80px total spacing - ensures text is fully visible */
+  padding-right: 1rem !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   margin: 0 !important;
   line-height: 48px !important;
-  display: flex !important;
-  align-items: center !important;
   box-sizing: border-box;
   border: none;
   vertical-align: middle;
-
-  &::placeholder {
-    line-height: 48px; /* Center placeholder vertically */
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 
   &:focus {
     outline: none;
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    padding-left: 5rem !important;
+    padding-right: 1rem !important;
   }
 }
 
@@ -931,6 +1032,9 @@
 
       .mat-mdc-form-field-infix {
         min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
       }
 
       .mat-mdc-form-field-input-control {
@@ -944,6 +1048,10 @@
       .mdc-text-field__input {
         height: 44px !important;
         line-height: 44px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }

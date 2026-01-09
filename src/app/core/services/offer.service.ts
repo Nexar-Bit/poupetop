@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class OfferService {
   private apiUrl = `${environment.apiUrl}/api/ofertas`;
   private itemsPerPage = 8; // 2 columns x 4 rows = 8 items per page
-  private defaultImageUrl = 'https://meumercadohoje.com.br/assets/imgproduto.jpg';
+  private defaultImageUrl = `${environment.apiUrl}/assets/imgproduto.jpg`;
 
   constructor(private http: HttpClient) {}
 
@@ -163,7 +163,11 @@ export class OfferService {
   private getTotalOffersByMunicipio(idMunicipio: number): Observable<number> {
     const params = new HttpParams().set('idMunicipio', idMunicipio.toString());
     return this.http.get<Offer[]>(this.apiUrl, { params }).pipe(
-      map(offers => offers.length)
+      map(offers => {
+        // Apply default images (for consistency, though we only need count)
+        const offersWithImages = this.setDefaultImages(offers);
+        return offersWithImages.length;
+      })
     );
   }
 
@@ -178,7 +182,11 @@ export class OfferService {
       .set('idMunicipio', idMunicipio.toString())
       .set('idEstabelecimento', idEstabelecimento.toString());
     return this.http.get<Offer[]>(this.apiUrl, { params }).pipe(
-      map(offers => offers.length)
+      map(offers => {
+        // Apply default images (for consistency, though we only need count)
+        const offersWithImages = this.setDefaultImages(offers);
+        return offersWithImages.length;
+      })
     );
   }
 

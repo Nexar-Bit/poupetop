@@ -13,18 +13,28 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'An error occurred';
         let showSnackbar = true;
+        let isJsonParsingError = false;
+
+        // Define optional endpoints that can fail without showing errors to users
+        const optionalEndpoints = ['/api/banners', '/api/purchases', '/estabelecimentos'];
+        const isOptionalEndpoint = optionalEndpoints.some(endpoint => req.url.includes(endpoint));
 
         if (error.error instanceof ErrorEvent) {
           // Client-side error
           errorMessage = `Error: ${error.error.message}`;
         } else {
-          // Server-side error
-          switch (error.status) {
+          // Check if this is a JSON parsing error with status 200 (server returned HTML instead of JSON)
+          if (error.status === 200 && error.error && typeof error.error === 'object' && error.error.text) {
+            // Server returned HTML instead of JSON
+            errorMessage = 'Server returned invalid response format.';
+            isJsonParsingError = true;
+            showSnackbar = false; // Don't show snackbar for JSON parsing errors
+          } else {
+            // Server-side error
+            switch (error.status) {
             case 0:
               // CORS or network errors
               // CORS errors typically have status 0 with external HTTPS URLs
-              const optionalEndpoints = ['/api/banners', '/api/purchases'];
-              const isOptionalEndpoint = optionalEndpoints.some(endpoint => req.url.includes(endpoint));
               
               // If it's an external HTTPS URL, it's likely a CORS error
               if (req.url.startsWith('https://')) {
@@ -38,7 +48,14 @@ export class ErrorInterceptor implements HttpInterceptor {
               }
               break;
             case 400:
-              errorMessage = error.error?.message || 'Bad request. Please check your input.';
+              // API may return plain text (e.g., "Município não existente") or JSON with message
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error?.message) {
+                errorMessage = error.error.message;
+              } else {
+                errorMessage = 'Bad request. Please check your input.';
+              }
               break;
             case 401:
               errorMessage = 'Unauthorized. Please log in.';
@@ -47,39 +64,69 @@ export class ErrorInterceptor implements HttpInterceptor {
               errorMessage = 'Access forbidden.';
               break;
             case 404:
-              errorMessage = error.error?.message || 'Resource not found.';
+              // API may return plain text or JSON with message
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error?.message) {
+                errorMessage = error.error.message;
+              } else {
+                errorMessage = 'Resource not found.';
+              }
               break;
             case 500:
               errorMessage = 'Server error. Please try again later.';
               // Suppress snackbar for optional endpoints that might not be implemented yet
-              const optionalEndpoints = ['/api/banners', '/api/purchases'];
-              if (optionalEndpoints.some(endpoint => req.url.includes(endpoint))) {
+              if (isOptionalEndpoint) {
                 showSnackbar = false;
               }
               break;
             default:
-              errorMessage = error.error?.message || `Error: ${error.status} ${error.statusText}`;
+              // API may return plain text or JSON with message
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error?.message) {
+                errorMessage = error.error.message;
+              } else {
+                errorMessage = `Error: ${error.status} ${error.statusText}`;
+              }
+              break;
+            }
           }
         }
 
         // Log error for debugging with full details
-        console.error('API Error:', {
-          url: req.url,
-          method: req.method,
-          status: error.status,
-          statusText: error.statusText,
-          message: errorMessage,
-          error: error.error,
-          headers: error.headers,
-          fullError: error
-        });
+        // Suppress verbose logging for:
+        // 1. JSON parsing errors (status 200 with HTML content)
+        // 2. Optional endpoints with 500 errors
+        const shouldSuppressLogs = isJsonParsingError || (isOptionalEndpoint && error.status === 500);
         
-        // Log the full error response body if available
-        if (error.error) {
-          try {
-            console.error('Error Response Body:', JSON.stringify(error.error, null, 2));
-          } catch (e) {
-            console.error('Error Response Body (raw):', error.error);
+        if (shouldSuppressLogs) {
+          // Quiet debug log for suppressed errors
+          if (isJsonParsingError) {
+            console.debug(`[JSON Parse Error] ${req.method} ${req.url} - Server returned HTML instead of JSON`);
+          } else {
+            console.debug(`[Optional Endpoint] ${req.method} ${req.url} - ${error.status}: ${error.error?.message || 'Not implemented yet'}`);
+          }
+        } else {
+          // Full error log for other errors
+          console.error('API Error:', {
+            url: req.url,
+            method: req.method,
+            status: error.status,
+            statusText: error.statusText,
+            message: errorMessage,
+            error: error.error,
+            headers: error.headers,
+            fullError: error
+          });
+          
+          // Log the full error response body if available
+          if (error.error) {
+            try {
+              console.error('Error Response Body:', JSON.stringify(error.error, null, 2));
+            } catch (e) {
+              console.error('Error Response Body (raw):', error.error);
+            }
           }
         }
 

@@ -82,7 +82,11 @@ export class PurchasesComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         },
         error: (error) => {
-          console.error('Error loading purchases:', error);
+          // Service should catch 500/404 errors and return empty array
+          // This error handler is for unexpected errors only
+          if (error.status !== 500 && error.status !== 404) {
+            console.error('Error loading purchases:', error);
+          }
           this.isLoading = false;
           this.hasMore = false;
           this.cdr.markForCheck();

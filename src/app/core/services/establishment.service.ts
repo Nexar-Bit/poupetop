@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 import { Establishment } from '../../models';
 import { environment } from '../../../environments/environment';
 
@@ -42,6 +42,15 @@ export class EstablishmentService {
           timestamp: Date.now(),
           expiresIn: this.cacheExpiration
         });
+      }),
+      catchError((error) => {
+        // Handle JSON parsing errors (e.g., when server returns HTML instead of JSON)
+        // or other API errors
+        console.debug('Error loading establishments:', error.status, error.statusText);
+        // Clear cache for this municipio if there was an error
+        this.establishmentsCache.delete(idMunicipio);
+        // Return empty array on error
+        return of([]);
       })
     );
   }

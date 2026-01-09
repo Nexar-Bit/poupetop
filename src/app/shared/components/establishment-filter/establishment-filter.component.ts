@@ -124,11 +124,12 @@ export class EstablishmentFilterComponent implements OnInit, OnDestroy, OnChange
           this.cdr.markForCheck();
         },
         error: (error) => {
-          console.error('Error loading establishments:', error);
+          // Service handles errors gracefully by returning empty array,
+          // but keep this as a fallback just in case
           this.establishments = [];
           this.filteredEstablishments = [];
           this.isLoading = false;
-          this.hasError = true;
+          this.hasError = false; // Don't show error state since service returns empty array
           this.cdr.markForCheck();
         }
       });

@@ -128,6 +128,7 @@
       min-height: 48px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
     }
 
     .mdc-text-field {
@@ -136,15 +137,17 @@
       align-items: center;
     }
 
-    .mdc-text-field__input {
-      height: 48px !important; /* Match location button height */
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      display: flex !important;
-      align-items: center !important;
-      line-height: 48px !important; /* Center text vertically */
-      box-sizing: border-box;
-    }
+      .mdc-text-field__input {
+        height: 48px !important; /* Match location button height */
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 48px !important; /* Center text vertically */
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+      }
 
     .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
       .mdc-notched-outline__leading,
@@ -184,17 +187,18 @@
   padding: 0 1rem !important;
   margin: 0 !important;
   transition: all 0.2s ease;
-  display: flex !important;
-  align-items: center !important;
   line-height: 48px !important; /* Center text vertically */
   box-sizing: border-box;
   border: none;
   vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &::placeholder {
     color: rgba(0, 0, 0, 0.4);
     opacity: 1;
-    line-height: 48px; /* Center placeholder vertically */
+    line-height: 48px !important; /* Center placeholder vertically */
   }
 
   &:focus {
@@ -369,6 +373,7 @@
         min-height: 44px;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
       }
 
       .mat-mdc-form-field-input-control {
@@ -388,8 +393,10 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         line-height: 44px !important; /* Center text vertically */
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }
@@ -401,9 +408,14 @@
     font-size: 16px; /* Keep 16px to prevent zoom */
     padding: 0 1rem !important;
     margin: 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
-      line-height: 44px; /* Center placeholder vertically */
+      color: rgba(0, 0, 0, 0.4);
+      opacity: 1;
+      line-height: 44px !important; /* Center placeholder vertically */
     }
   }
 
@@ -472,6 +484,7 @@
         min-height: 52px;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
       }
 
       .mat-mdc-form-field-input-control {
@@ -491,8 +504,10 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         line-height: 52px !important; /* Center text vertically */
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }
@@ -504,9 +519,14 @@
     font-size: 17px;
     padding: 0 1.25rem !important;
     margin: 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
-      line-height: 52px; /* Center placeholder vertically */
+      color: rgba(0, 0, 0, 0.4);
+      opacity: 1;
+      line-height: 52px !important; /* Center placeholder vertically */
     }
   }
 
@@ -575,6 +595,7 @@
         min-height: 56px;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
       }
 
       .mat-mdc-form-field-input-control {
@@ -594,8 +615,10 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         line-height: 56px !important; /* Center text vertically */
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }
@@ -607,9 +630,14 @@
     font-size: 18px;
     padding: 0 1.5rem !important;
     margin: 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
-      line-height: 56px; /* Center placeholder vertically */
+      color: rgba(0, 0, 0, 0.4);
+      opacity: 1;
+      line-height: 56px !important; /* Center placeholder vertically */
     }
   }
 
@@ -683,6 +711,7 @@
         min-height: 40px;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
       }
 
       .mat-mdc-form-field-input-control {
@@ -702,8 +731,10 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         line-height: 40px !important; /* Center text vertically */
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
       }
     }
   }
@@ -714,9 +745,14 @@
     line-height: 40px !important; /* Center text vertically */
     padding: 0 1rem !important;
     margin: 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &::placeholder {
-      line-height: 40px; /* Center placeholder vertically */
+      color: rgba(0, 0, 0, 0.4);
+      opacity: 1;
+      line-height: 40px !important; /* Center placeholder vertically */
     }
   }
 

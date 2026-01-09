@@ -43,17 +43,58 @@ export class BannerCarouselComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (banners) => {
-          this.banners = banners;
+          // If API returns empty array, use fallback banners
+          this.banners = banners.length > 0 ? banners : this.getFallbackBanners();
           this.isLoading = false;
           this.cdr.markForCheck();
           // Configure autoplay after banners are loaded
           setTimeout(() => this.configureAutoplay(), 100);
         },
         error: () => {
+          // On error, use fallback banners
+          this.banners = this.getFallbackBanners();
           this.isLoading = false;
           this.cdr.markForCheck();
         }
       });
+  }
+
+  /**
+   * Get fallback banners when API is not available
+   */
+  private getFallbackBanners(): Banner[] {
+    return [
+      {
+        id: 1,
+        imageUrl: '/assets/banners/Banner - Beauty Salon.png',
+        linkUrl: '/offers',
+        title: 'Beauty Salon'
+      },
+      {
+        id: 2,
+        imageUrl: '/assets/banners/Banner - Café Especial.png',
+        linkUrl: '/offers',
+        title: 'Café Especial'
+      },
+      {
+        id: 3,
+        imageUrl: '/assets/banners/Banner - Electronic Store.png',
+        linkUrl: '/offers',
+        title: 'Electronic Store'
+      },
+      {
+        id: 4,
+        imageUrl: '/assets/banners/Banner - Restaurante Jantar.png',
+        linkUrl: '/offers',
+        title: 'Restaurante Jantar'
+      },
+      {
+        id: 5,
+        imageUrl: '/assets/banners/Banner - Academia Fitness.png',
+        linkUrl: '/offers',
+        title: 'Academia Fitness'
+      }
+    ];
   }
 
   ngAfterViewInit(): void {
