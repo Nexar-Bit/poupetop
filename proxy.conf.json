@@ -1,20 +1,17 @@
 {
-  "/api/*": {
-    "target": "https://meumercadohoje.com.br",
+  "/api": {
+    "target": "https://meumercadohoje.com.br/",
     "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "changeOrigin": true
   },
-  "/estabelecimentos*": {
-    "target": "https://meumercadohoje.com.br",
+  "/estabelecimentos": {
+    "target": "https://meumercadohoje.com.br/",
     "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "changeOrigin": true
   },
-  "/produtos-nota-fiscal*": {
-    "target": "https://meumercadohoje.com.br",
+  "/produtos-nota-fiscal": {
+    "target": "https://meumercadohoje.com.br/",
     "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
+    "changeOrigin": true
   }
 }

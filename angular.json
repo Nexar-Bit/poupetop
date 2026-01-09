@@ -87,13 +87,15 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "poupetop:build:production"
             },
             "development": {
-              "buildTarget": "poupetop:build:development",
-              "proxyConfig": "proxy.conf.json"
+              "buildTarget": "poupetop:build:development"
             }
           },
           "defaultConfiguration": "development"

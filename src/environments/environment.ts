@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://meumercadohoje.com.br'
+  apiUrl: '' // Empty in development so proxy handles the requests
 };
